@@ -1,3 +1,4 @@
+from collections import Counter
 # Задание 1
 # Дан список учеников, нужно посчитать количество повторений каждого имени ученика
 # Пример вывода:
@@ -14,6 +15,10 @@ students = [
 ]
 # ???
 
+lst = Counter(map(lambda student: student['first_name'], students))
+
+for name in lst:
+    print(f'{name}: {lst[name]}')
 
 # Задание 2
 # Дан список учеников, нужно вывести самое часто повторящееся имя
@@ -27,6 +32,13 @@ students = [
     {'first_name': 'Оля'},
 ]
 # ???
+
+lst = Counter(map(lambda student: student['first_name'], students))
+max_val = max(lst.values())
+
+for k in lst.items():
+    if k[1] == max_val:
+        print(f'Most popular name is {k[0]} ({max_val} times).')
 
 
 # Задание 3
@@ -52,7 +64,16 @@ school_students = [
     ],
 ]
 # ???
+i = 1
+for students in school_students:
 
+    lst = Counter(map(lambda student: student['first_name'], students))
+    max_val = max(lst.values())
+
+    for k in lst.items():
+        if k[1] == max_val:
+            print(f'Most popular name in class {i} is {k[0]} ({max_val} times).')
+            i += 1
 
 # Задание 4
 # Для каждого класса нужно вывести количество девочек и мальчиков в нём.
@@ -73,7 +94,21 @@ is_male = {
     'Даша': False,
 }
 # ???
+girls = 0
+boys = 0
 
+keyslist = [key for key in is_male]
+for classes in school:
+    class_name = classes['class']
+    for students in classes['students']:
+        for key in keyslist:
+            if students['first_name'] == key and is_male[students['first_name']] == False:
+                girls += 1
+            if students['first_name'] == key and is_male[students['first_name']] == True:
+                boys += 1
+    print(f'Class {class_name}: girls - {girls}, boys - {boys}')
+    girls = 0
+    boys = 0
 
 # Задание 5
 # По информации о учениках разных классов нужно найти класс, в котором больше всего девочек и больше всего мальчиков
@@ -93,3 +128,45 @@ is_male = {
 }
 # ???
 
+classlist = []
+classes_genders = {}
+
+keyslist = [key for key in is_male]
+
+#Собираем словарь учеников
+for classes in school:
+    
+    girls = 0
+    boys = 0
+    
+    #Смотрим сколько мальчиков и девочек в классе
+    for students in classes['students']:
+        for key in keyslist:
+            if students['first_name'] == key and is_male[students['first_name']] == False:
+                girls += 1
+            if students['first_name'] == key and is_male[students['first_name']] == True:
+                boys += 1
+    
+    #добавляем количество девочек и мальчиков в классе
+    class_name = classes['class']
+
+    classes_genders['class'] = class_name
+    classes_genders['girls'] = girls
+    classes_genders['boys'] = boys
+    
+    girls = 0
+    boys = 0
+    classlist.append(classes_genders)
+    classes_genders={}
+
+i=0
+x=0
+for items in classlist:
+    if items['girls'] > i:
+        i = items['girls']
+        cls =  items['class']
+        print(f'Most girls in the class {cls}')
+    if items['boys'] > x:
+        x = items['boys']
+        cls =  items['class']
+        print(f'Most boys in the class {cls}')
