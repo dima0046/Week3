@@ -1,4 +1,4 @@
-from typing import Counter
+from collections import Counter
 
 # Вывести последнюю букву в слове
 word = 'Архангельск'
@@ -9,7 +9,8 @@ print(word[-1])
 # Вывести количество букв "а" в слове
 word = 'Архангельск'
 # ???
-print(Counter(word.lower())['а'])
+count_a = Counter(word.lower())['а']
+print(f'Количество букв "а" в слове "Архангельск": {count_a}')
 
 # Вывести количество гласных букв в слове
 word = 'Архангельск'
